@@ -172,6 +172,217 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jnjyan.github.io/2021/04/08/tensorflow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E9%BB%91%E7%99%BD.jpg">
+      <meta itemprop="name" content="JNJYan">
+      <meta itemprop="description" content="以梦为马，越骑越傻">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Black Eye Galaxy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/08/tensorflow/" class="post-title-link" itemprop="url">tensorflow</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-08 16:26:20 / 修改时间：22:02:20" itemprop="dateCreated datePublished" datetime="2021-04-08T16:26:20+08:00">2021-04-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index"><span itemprop="name">源码阅读</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/04/08/tensorflow/" class="post-meta-item leancloud_visitors" data-flag-title="tensorflow" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/04/08/tensorflow/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/08/tensorflow/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Graph-h"><a href="#Graph-h" class="headerlink" title="Graph.h"></a>Graph.h</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">id</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> id_; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">const_id</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> cost_id_; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">const</span> <span class="built_in">string</span>&amp; <span class="title">name</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">set_name</span><span class="params">(<span class="built_in">string</span> name)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">const</span> <span class="built_in">string</span>&amp; <span class="title">type_string</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">const</span> NodeDef&amp; <span class="title">def</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">const</span> OpDef&amp; <span class="title">op_def</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Graph</span>;</span></span><br><span class="line">    Node();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> id_;</span><br><span class="line">    <span class="keyword">int</span> const_id_;</span><br><span class="line"></span><br><span class="line">    NodeClass class_;</span><br><span class="line"></span><br><span class="line">    EdgeSet in_edges_;</span><br><span class="line">    EdgeSet out_edges_;</span><br><span class="line"></span><br><span class="line">    Graph* graph_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Edge</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Node* <span class="title">src</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> src_; &#125;</span><br><span class="line">    <span class="function">Node* <span class="title">dst</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> dst_; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">id</span><span class="params">()</span> <span class="keyword">const</span>  </span>&#123; <span class="keyword">return</span> id_; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">src_output</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> src_output_; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">dst_input</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> dst_input_; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">IsControlEdge</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Edge() &#123;&#125;</span><br><span class="line">    <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Graph</span>;</span></span><br><span class="line">    Node* src_;</span><br><span class="line">    Node* dst_;</span><br><span class="line">    <span class="keyword">int</span> id_;</span><br><span class="line">    <span class="keyword">int</span> src_output_;<span class="comment">//前驱节点的第src_output_条输出边</span></span><br><span class="line">    <span class="keyword">int</span> dst_input_;<span class="comment">//后继节点的第dst_output_条输入边</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>控制依赖边，其<code>src_output/dst_output</code>均为<code>Graph::kControlSlot</code>(-1)，意味着控制依赖边不承载任何数据。</p>
+<p>计算图的普通边承载Tensor，并使用<code>TensorId</code>标识，TensorId由二元组<code>node_name:src_output</code>唯一标识，其中<code>node_name</code>为边的前驱节点。<code>src_output</code>缺省为0，即<code>node_name</code>与<code>node_name:0</code>等价，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Graph</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Graph</span><span class="params">(<span class="keyword">const</span> OpRegistryInterface* ops)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Graph</span><span class="params">(<span class="keyword">const</span> FunctionLibraryDefinition&amp; flib_def)</span></span>;</span><br><span class="line">    ~Graph();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> kControlSlot; <span class="comment">// -1 控制边，不承载任何数据</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">set_versions</span><span class="params">(<span class="keyword">const</span> VersionDef&amp; versions)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">Node* <span class="title">AddNode</span><span class="params">(NodeDef node_def, Status* status)</span></span>;</span><br><span class="line">    <span class="function">Node* <span class="title">CopyNode</span><span class="params">(<span class="keyword">const</span> Node* node)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">RemoveNode</span><span class="params">(Node* node)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">const</span> Edge* <span class="title">AddEdge</span><span class="params">(Node* source, <span class="keyword">int</span> x, Node* dest, <span class="keyword">int</span> y)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">const</span> Edge* <span class="title">AddControlEdge</span><span class="params">(Node* source, Node* dest, <span class="keyword">bool</span> allow_deuplicates=<span class="literal">false</span>)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">RemoveEdge</span><span class="params">(<span class="keyword">const</span> Edge* edge)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">RemoveControlEdge</span><span class="params">(<span class="keyword">const</span> Edge* edge)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">enum</span> &#123;</span>kSourceId = <span class="number">0</span>, kSinkId = <span class="number">1</span>&#125;;</span><br><span class="line">    <span class="function">Node* <span class="title">FindNodeId</span><span class="params">(<span class="keyword">int</span> id)</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> nodes_[id]; &#125;</span><br><span class="line">    <span class="function">Node* <span class="title">source_node</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> FindNodeId(kSourceId); &#125;</span><br><span class="line">    <span class="function">Node* <span class="title">sink_node</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> FindNodeId(kSinkId); &#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    FunctionLibraryDefinition ops_;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;VersionDef&gt; versions_;</span><br><span class="line">    </span><br><span class="line">    core::Arena arena_;</span><br><span class="line">    <span class="built_in">vector</span>&lt;Node*&gt; nodes_;</span><br><span class="line">    int64 num_nodes_ = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;Edge*&gt; edges_;</span><br><span class="line">    <span class="keyword">int</span> num_edges_ = <span class="number">0</span>;    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Graph::Graph(<span class="keyword">const</span> OpRegistryInterface* ops) </span><br><span class="line">      : ops_(ops, FunctionDefLibrary()), </span><br><span class="line">        versions_(<span class="keyword">new</span> VersionDef),</span><br><span class="line">        arena_(<span class="number">8</span> &lt;&lt; <span class="number">10</span>) &#123;</span><br><span class="line">    <span class="comment">// versions_-&gt;set_procuder(...);</span></span><br><span class="line">    <span class="comment">// versions_-&gt;set_min_consumer(...);</span></span><br><span class="line"></span><br><span class="line">    device_names.push_back(<span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line">    NodeDef def;</span><br><span class="line">    def.set_name(<span class="string">&quot;_SOURCE&quot;</span>);</span><br><span class="line">    def.set_op(<span class="string">&quot;NoOp&quot;</span>);</span><br><span class="line">    Node* source = AddNode(def, &amp;status);</span><br><span class="line">    def.set_name(<span class="string">&quot;_SINK&quot;</span>);</span><br><span class="line">    Node* sink = AddNode(def, &amp;status);</span><br><span class="line"></span><br><span class="line">    AddControlEdge(source, sink);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Graph是一个DAG，按照拓扑排序运行，若存在多个入度为0的节点，则并行运行。初始状态，有一个起始节点Source和终止节点Sink，普通节点的id必大于1。</p>
+<p>Source和Sink之间有一个控制依赖边，保证计算图的执行始于Source，止于Sink。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jnjyan.github.io/2021/04/08/linux%E5%91%BD%E4%BB%A4-grep/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E9%BB%91%E7%99%BD.jpg">
+      <meta itemprop="name" content="JNJYan">
+      <meta itemprop="description" content="以梦为马，越骑越傻">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Black Eye Galaxy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/08/linux%E5%91%BD%E4%BB%A4-grep/" class="post-title-link" itemprop="url">linux命令-grep</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-08 10:36:49 / 修改时间：11:32:24" itemprop="dateCreated datePublished" datetime="2021-04-08T10:36:49+08:00">2021-04-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%AF%8F%E5%A4%A9%E4%B8%80%E4%B8%AAlinux%E5%91%BD%E4%BB%A4/" itemprop="url" rel="index"><span itemprop="name">每天一个linux命令</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/04/08/linux%E5%91%BD%E4%BB%A4-grep/" class="post-meta-item leancloud_visitors" data-flag-title="linux命令-grep" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/04/08/linux%E5%91%BD%E4%BB%A4-grep/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/08/linux%E5%91%BD%E4%BB%A4-grep/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="grep简介"><a href="#grep简介" class="headerlink" title="grep简介"></a>grep简介</h1><p>grep命令是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹配的行打印出来。grep全称是Global Regular Expression Print，表示全局正则表达式版本，它的使用权限是所有用户。</p>
+<p>grep在一个或多个文件中搜索字符串模板，如果模板包括空格，则必须使用引号引用，模板后的所有字符串被看作文件名。搜索的结果被送到标准输出，不影响原文件内容。</p>
+<p>grep可用于shell脚本，因为grep通过返回一个状态值来说明搜索的状态，如果模板搜索成功，则返回0，如果搜索不成功，则返回1，如果搜索的文件不存在，则返回2。我们利用这些返回值就可进行一些自动化的文本处理工作。</p>
+<p>shell中可以通过<code>$?</code>获取上一个命令的返回值。</p>
+<h1 id="grep用法"><a href="#grep用法" class="headerlink" title="grep用法"></a>grep用法</h1><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Usage: grep [OPTION]... PATTERN [FILE]...</span><br><span class="line">Search for PATTERN in each FILE.</span><br><span class="line">Example: grep -i &#x27;hello world&#x27; menu.h main.c</span><br></pre></td></tr></table></figure>
+
+<h1 id="grep参数"><a href="#grep参数" class="headerlink" title="grep参数"></a>grep参数</h1><table>
+<thead>
+<tr>
+<th>-参数</th>
+<th>–参数</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-a</td>
+<td>–text</td>
+<td>搜索二进制数据</td>
+</tr>
+<tr>
+<td>-i</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://jnjyan.github.io/2021/04/07/git%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -930,220 +1141,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jnjyan.github.io/2021/03/25/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%B8%89-%E7%B1%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E9%BB%91%E7%99%BD.jpg">
-      <meta itemprop="name" content="JNJYan">
-      <meta itemprop="description" content="以梦为马，越骑越傻">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Black Eye Galaxy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/25/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%B8%89-%E7%B1%BB/" class="post-title-link" itemprop="url">Google C++风格指南(三)——类</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-03-25 14:02:10 / 修改时间：20:38:49" itemprop="dateCreated datePublished" datetime="2021-03-25T14:02:10+08:00">2021-03-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/03/25/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%B8%89-%E7%B1%BB/" class="post-meta-item leancloud_visitors" data-flag-title="Google C++风格指南(三)——类" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/03/25/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%B8%89-%E7%B1%BB/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/25/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%B8%89-%E7%B1%BB/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h1><p>不要在构造函数中调用虚函数，也不要在无法报错时进行可能失败的初始化。</p>
-<p>构造函数内调用自身的虚函数并不会重定向到子类的虚函数实现。</p>
-<p>如果执行失败，可能会得到一个初始化失败的对象，这个对象可能无法进入到正常状态。</p>
-<p>如果对象需要进行初始化，通过定义<code>Init()</code>方法或工厂方法进行创建并初始化。</p>
-<h1 id="隐式类型转换"><a href="#隐式类型转换" class="headerlink" title="隐式类型转换"></a>隐式类型转换</h1><p>一脸懵比</p>
-<h1 id="可拷贝类型和可移动类型"><a href="#可拷贝类型和可移动类型" class="headerlink" title="可拷贝类型和可移动类型"></a>可拷贝类型和可移动类型</h1><p>如果不需要，禁用隐式生成的拷贝和移动构造函数。</p>
-<h1 id="结构体-类"><a href="#结构体-类" class="headerlink" title="结构体/类"></a>结构体/类</h1><p>仅当只有数据成员和重载运算符时使用<code>struct</code>，其他一概使用<code>class</code>。</p>
-<p>#TODO</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jnjyan.github.io/2021/03/24/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%BA%8C-%E4%BD%9C%E7%94%A8%E5%9F%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E9%BB%91%E7%99%BD.jpg">
-      <meta itemprop="name" content="JNJYan">
-      <meta itemprop="description" content="以梦为马，越骑越傻">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Black Eye Galaxy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/24/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%BA%8C-%E4%BD%9C%E7%94%A8%E5%9F%9F/" class="post-title-link" itemprop="url">Google C++风格指南(二)——作用域</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-24 20:18:03" itemprop="dateCreated datePublished" datetime="2021-03-24T20:18:03+08:00">2021-03-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-25 20:38:40" itemprop="dateModified" datetime="2021-03-25T20:38:40+08:00">2021-03-25</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/03/24/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%BA%8C-%E4%BD%9C%E7%94%A8%E5%9F%9F/" class="post-meta-item leancloud_visitors" data-flag-title="Google C++风格指南(二)——作用域" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/03/24/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%BA%8C-%E4%BD%9C%E7%94%A8%E5%9F%9F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/24/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%BA%8C-%E4%BD%9C%E7%94%A8%E5%9F%9F/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h1><p>C++中的全局函数和全局变量的作用域是整个项目，为了限制其作用域，一种做法是使用<code>static</code>关键字修饰，另一种是使用命名空间。</p>
-<p>在不需要外部访问的情况下，C++标准提倡使用匿名命名空间，禁止使用<code>using</code>引入命名空间，禁止使用内联命名空间。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> X&#123;</span><br><span class="line">    <span class="keyword">inline</span> <span class="keyword">namespace</span> Y&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 别名</span></span><br><span class="line"><span class="keyword">namespace</span> baz = ::foo::bar::baz;</span><br></pre></td></tr></table></figure>
-
-<p>在内联命名空间中，<code>X::Y::foo()</code>与<code>X::foo()</code>等价，其目的主要是用来兼容跨版本API。</p>
-<p>命名空间使用策略：</p>
-<ul>
-<li>遵循命名空间命名规范</li>
-<li>命名空间结束时，使用注释</li>
-<li>命名空间应当在头文件、gflag声明与定义、其他空间的类前置声明之后</li>
-<li>禁止在<code>std</code>内声明任何东西，属于未定义行为，导致不可移植</li>
-<li>禁止在头文件中使用命名空间别名，除非限制在内部命名空间中使用</li>
-<li>禁止使用<code>using</code>引入命名空间</li>
-<li>禁止使用内联命名空间</li>
-</ul>
-<h1 id="匿名命名空间与静态变量"><a href="#匿名命名空间与静态变量" class="headerlink" title="匿名命名空间与静态变量"></a>匿名命名空间与静态变量</h1><p>在<code>cxx</code>中定义不需要被外部引用的符号时，可以放在匿名命名空间或声明为<code>static</code>，但不要在头文件中这样做。</p>
-<h1 id="非成员函数、静态成员函数、全局函数"><a href="#非成员函数、静态成员函数、全局函数" class="headerlink" title="非成员函数、静态成员函数、全局函数"></a>非成员函数、静态成员函数、全局函数</h1><p>使用静态成员或命名空间内的非成员函数，不要使用裸的全局函数，不要用类的静态方法模拟命名空间效果，类的静态方法应当与类的实例或静态数据密切相关。</p>
-<p>非成员函数置于命名空间避免污染全局作用域。</p>
-<h1 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h1><p>将函数变量尽可能放在最小作用域内，在变量声明时进行初始化。</p>
-<p>除非变量是一个对象，每次进入作用域都需要调用构造函数，退出作用域调用析构函数。</p>
-<h1 id="静态和全局变量"><a href="#静态和全局变量" class="headerlink" title="静态和全局变量"></a>静态和全局变量</h1><p>静态生存周期的对象，包括全局变量、静态变量、静态类成员、函数静态变量，必须是原生数据类型(POD, Plain Old Data)。</p>
-<p>在多编译单元中，静态变量的构造、析构和初始化顺序在C++中只有部分是明确的，甚至随着构建发生变化，导致难以发现的bug，禁止使用类的静态存储周期变量。</p>
-<p>在同一编译单元中顺序是明确的，静态初始化优于动态初始化、初始化顺序按照声明顺序进行，逆序销毁，不同编译单元内，属于未明确行为。</p>
-<p>多线程时，静态生存周期不要使用非POD的对象以及STL容器。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1215,20 +1212,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
