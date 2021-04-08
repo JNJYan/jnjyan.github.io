@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jnjyan.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","width":250,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="self-contained头文件头文件需要自给自足，头文件本身应当是能编译的（个人理解时在没有源文件.cxx的情况也能编译通过）。 头文件应当用#define保护，并包含其所需要的所有其他头文件。 模板和内联函数的定义和声明应当处于同一文件内。 define保护所有头文件都应该使用#define防止文件被多重包含，并且为了保证唯一性，宏命名应当基于所在项目源码的全路径，格式应当为&lt;PROJ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Google C++风格指南(一)——头文件">
+<meta property="og:url" content="https://jnjyan.github.io/2021/03/24/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%B8%80-%E5%A4%B4%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Black Eye Galaxy">
+<meta property="og:description" content="self-contained头文件头文件需要自给自足，头文件本身应当是能编译的（个人理解时在没有源文件.cxx的情况也能编译通过）。 头文件应当用#define保护，并包含其所需要的所有其他头文件。 模板和内联函数的定义和声明应当处于同一文件内。 define保护所有头文件都应该使用#define防止文件被多重包含，并且为了保证唯一性，宏命名应当基于所在项目源码的全路径，格式应当为&lt;PROJ">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-24T09:53:57.000Z">
+<meta property="article:modified_time" content="2021-03-25T12:38:02.304Z">
+<meta property="article:author" content="JNJYan">
+<meta property="article:tag" content="C++编码规范">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jnjyan.github.io/2021/03/24/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%B8%80-%E5%A4%B4%E6%96%87%E4%BB%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Google C++风格指南(一)——头文件 | Black Eye Galaxy</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?223443aa6efb3158acac1d42a993f246";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Black Eye Galaxy</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jnjyan.github.io/2021/03/24/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%B8%80-%E5%A4%B4%E6%96%87%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E9%BB%91%E7%99%BD.jpg">
+      <meta itemprop="name" content="JNJYan">
+      <meta itemprop="description" content="以梦为马，越骑越傻">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Black Eye Galaxy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Google C++风格指南(一)——头文件
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-24 17:53:57" itemprop="dateCreated datePublished" datetime="2021-03-24T17:53:57+08:00">2021-03-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-25 20:38:02" itemprop="dateModified" datetime="2021-03-25T20:38:02+08:00">2021-03-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/03/24/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%B8%80-%E5%A4%B4%E6%96%87%E4%BB%B6/" class="post-meta-item leancloud_visitors" data-flag-title="Google C++风格指南(一)——头文件" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/03/24/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%B8%80-%E5%A4%B4%E6%96%87%E4%BB%B6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/24/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%B8%80-%E5%A4%B4%E6%96%87%E4%BB%B6/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="self-contained头文件"><a href="#self-contained头文件" class="headerlink" title="self-contained头文件"></a>self-contained头文件</h1><p>头文件需要自给自足，头文件本身应当是能编译的（个人理解时在没有源文件<code>.cxx</code>的情况也能编译通过）。</p>
+<p>头文件应当用<code>#define</code>保护，并包含其所需要的所有其他头文件。</p>
+<p>模板和内联函数的定义和声明应当处于同一文件内。</p>
+<h1 id="define保护"><a href="#define保护" class="headerlink" title="define保护"></a>define保护</h1><p>所有头文件都应该使用<code>#define</code>防止文件被多重包含，并且为了保证唯一性，宏命名应当基于所在项目源码的全路径，格式应当为<code>&lt;PROJECT&gt;_&lt;PATH&gt;_&lt;FILE&gt;_H_</code>。</p>
+<h1 id="引入所有使用的头文件"><a href="#引入所有使用的头文件" class="headerlink" title="引入所有使用的头文件"></a>引入所有使用的头文件</h1><p>不要依赖于<code>include</code>传递，如果<code>foo.cxx</code>文件使用了<code>bar.h</code>中的符号，就应当在<code>foo.cxx</code>中引入<code>bar.h</code>，即使在<code>bar.h</code>已经引入了。</p>
+<p>也就是说，尽量在源文件中引入库，而不是在对应的头文件中引入，目的是为了减少引入依赖。例如当<code>A.cxx</code>依赖于<code>B.h</code>时，对<code>B.h</code>的任何修改都会导致<code>A.cxx</code>的重新构建，而此时<code>B.cxx</code>依赖于<code>C.h</code>，那么我们现在有两个选择，一是在<code>B.cxx</code>中引入<code>C.h</code>，二是在<code>B.h</code>中引入<code>C.h</code>。若选择第二种，我们对<code>C.h</code>的任何修改都会导致<code>A.cxx</code>的重新构建，若选择第一种，则不会触发<code>A.cxx</code>的重新构建。</p>
+<h1 id="前置声明"><a href="#前置声明" class="headerlink" title="前置声明"></a>前置声明</h1><p>前置声明是指类、函数和模板不带有定义的纯粹声明，应当避免使用前置声明，将声明放在头文件中，然后<code>#include</code>。</p>
+<ul>
+<li>优点<ul>
+<li>前置声明能够节省编译时间。</li>
+<li>前置声明能节省不必要的重新编译时间，使用<code>#include</code>会使得代码由于头文件中无关改动而被重新编译。</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>前置声明隐藏依赖关系，头文件改动时，源文件会跳过必要的重新编译过程。</li>
+<li>前置声明可能被库的后续更改所破坏。</li>
+<li>前置声明来自<code>std::</code>中的符号时，行为未定义。</li>
+<li>前置声明甚至会改变代码含义。</li>
+<li>重构代码更为复杂和困难。</li>
+</ul>
+</li>
+</ul>
+<h1 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h1><ul>
+<li>经验：<ul>
+<li>只有函数不多于10行时才将其定义为内联函数</li>
+<li>不要内联包含循环和<code>switch</code>的函数</li>
+<li>不要内联递归函数</li>
+<li>即使声明为内联函数，编译器也不一定会接受</li>
+<li>类声明内定义的函数默认为内联函数</li>
+</ul>
+</li>
+</ul>
+<h1 id="include的路径和顺序"><a href="#include的路径和顺序" class="headerlink" title="include的路径和顺序"></a>include的路径和顺序</h1><p>避免使用<code>.</code>和<code>..</code>，按照项目源码路径完整<code>include</code>。</p>
+<ul>
+<li>内联顺序：<ol>
+<li>同名头文件</li>
+<li>C系统文件</li>
+<li>C++系统文件</li>
+<li>其他库<code>.h</code></li>
+<li>本项目<code>.h</code></li>
+</ol>
+</li>
+</ul>
+<p>这种优先顺序保证了当<code>.h</code>文件遗漏某些库时，源文件的构建会立刻终止。</p>
+<p>不同类型的头文件空格分隔。</p>
+<p>例外情况，条件编译绝对是否引入库，如不同平台。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/C-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" rel="tag"><i class="fa fa-tag"></i> C++编码规范</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/24/attribute-%E9%82%A3%E4%BA%9B%E4%BA%8B/" rel="prev" title="__attribute__那些事">
+      <i class="fa fa-chevron-left"></i> __attribute__那些事
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/24/Google-C-%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97-%E4%BA%8C-%E4%BD%9C%E7%94%A8%E5%9F%9F/" rel="next" title="Google C++风格指南(二)——作用域">
+      Google C++风格指南(二)——作用域 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#self-contained%E5%A4%B4%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">self-contained头文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define%E4%BF%9D%E6%8A%A4"><span class="nav-number">2.</span> <span class="nav-text">define保护</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E5%85%A5%E6%89%80%E6%9C%89%E4%BD%BF%E7%94%A8%E7%9A%84%E5%A4%B4%E6%96%87%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">引入所有使用的头文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E5%A3%B0%E6%98%8E"><span class="nav-number">4.</span> <span class="nav-text">前置声明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">内联函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#include%E7%9A%84%E8%B7%AF%E5%BE%84%E5%92%8C%E9%A1%BA%E5%BA%8F"><span class="nav-number">6.</span> <span class="nav-text">include的路径和顺序</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="JNJYan"
+      src="/images/%E9%BB%91%E7%99%BD.jpg">
+  <p class="site-author-name" itemprop="name">JNJYan</p>
+  <div class="site-description" itemprop="description">以梦为马，越骑越傻</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jnjyan" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jnjyan" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jjy20140825@gmail.com" title="E-Mail → mailto:jjy20140825@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JNJYan</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '67N9uXqPnCYl5B83g0FFVgob-gzGzoHsz',
+      appKey     : 'b6Uh6OmG6qcnmzhznNKskpnM',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
